@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.avegao.iot.fronius";
+option java_outer_classname = "IotFroniusProto";
+option objc_class_prefix = "RTG";
+
+package iot_fronius;
+
+service Fronius {
+    rpc InsertCurrentDataPowerflow (Powerflow) returns (SuccessResponse);
+}
+
+//enum SiteMode {
+//    PRODUCE_ONLY = 0;
+//    METER = 1;
+//    VAGUE_METER = 2;
+//    BIDIRECTIONAL = 3;
+//    AC_COUPLED = 4;
+//}
+//
+//enum MeterLocation {
+//    LOAD = 0;
+//    GRID = 1;
+//    UNKOWN = 2;
+//}
+//
+//enum BattteryMode {
+//    DISABLED = 0;
+//    NORMAL = 1;
+//    SERVICE = 2;
+//    CHARGE_BOOST = 3;
+//    NEARYLY_DEPLETED = 4;
+//    SUSPENDED = 5;
+//    CALIBRATE = 6;
+//    GRID_SUPPORT = 7;
+//    DEPLETE_RECOVERY = 8;
+//    NON_OPERABLE_VOLTAGE = 9;
+//    NON_OPERABLE_TEMPERATURE = 10;
+//    PREHEATING = 11;
+//    STARTUP = 12;
+//}
+//
+//enum OhmpilotState {
+//    NORMAL = 0;
+//    MIN_TEMPERATURE = 1;
+//    LEGIONALLA_PROTECTION = 2;
+//    FAULT = 3;
+//    WARNING = 4;
+//    BOOST = 5;
+//}
+
+message SuccessResponse {
+    bool success = 1;
+}
+
+message Powerflow {
+    SitePowerflow site = 1;
+    repeated InverterPowerflow inverter = 2;
+    repeated OhmpilotPowerflow ohmpilot = 3;
+}
+
+message SitePowerflow {
+    string mode = 1;
+    bool batteryStandby = 2;
+    bool backupMode = 3;
+    double powerFromGrid = 4;
+    double powerLoad = 5;
+    double powerAkku = 6;
+    double powerFromPv = 7;
+    uint32 relativeSelfConsumption = 8;
+    uint32 relativeAutonomy = 9;
+    string meterLocation = 10;
+    double energyDay = 11;
+    double energyYear = 12;
+    double energyTotal = 13;
+}
+
+message InverterPowerflow {
+    string batteryMode = 1;
+    uint32 deviceType = 2;
+    double energyDay = 3;
+    double energyYear = 4;
+    double energyTotal = 5;
+    double currentPower = 6;
+    uint32 soc = 7;
+}
+
+message OhmpilotPowerflow {
+    double PowerAcTotal = 1;
+    string state = 2;
+    double temperature = 3;
+}

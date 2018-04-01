@@ -1,0 +1,14 @@
+package: github.com/avegao/iot-fronius
+import:
+- package: github.com/avegao/gocondi
+  version: ^0.5.4
+- package: google.golang.org/grpc
+  version: ^1.10.0
+- package: github.com/golang/protobuf
+  version: ^1.0.0
+  subpackages:
+  - proto
+- package: github.com/lib/pq
+- package: github.com/sirupsen/logrus
+  version: ^1.0.5
+- package: github.com/heroku/rollrus

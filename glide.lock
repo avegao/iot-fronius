@@ -1,0 +1,86 @@
+hash: 4c0e751bf9135328a6bd1167fe3fd1614fb864fb4d99a0eaf3f341210c4f7868
+updated: 2018-03-26T12:24:59.936284+02:00
+imports:
+- name: github.com/avegao/gocondi
+  version: 3574f033857b791ac7b17c7e32f2312b2756f52e
+- name: github.com/avegao/iot-api
+  version: de80598360c60df1eb51ed9a890b0c0265e53adc
+  subpackages:
+  - entity/fronius
+- name: github.com/golang/protobuf
+  version: 925541529c1fa6821df4e44ce2723319eb2be768
+  subpackages:
+  - proto
+  - protoc-gen-go/descriptor
+  - ptypes
+  - ptypes/any
+  - ptypes/duration
+  - ptypes/timestamp
+- name: github.com/heroku/rollrus
+  version: 8c4f823801514d40d7c7d6cfa13320af0a091611
+- name: github.com/lib/pq
+  version: a96442e255fce502751c604916b0e14e81be6bf9
+- name: github.com/pkg/errors
+  version: 816c9085562cd7ee03e7f8188a1cfd942858cded
+- name: github.com/sirupsen/logrus
+  version: c155da19408a8799da419ed3eeb0cb5db0ad5dbc
+- name: github.com/stvp/roll
+  version: 3627a5cbeaeaa68023abd02bb8687925265f2f63
+- name: golang.org/x/crypto
+  version: 88942b9c40a4c9d203b82b3731787b672d6e809b
+  subpackages:
+  - ssh/terminal
+- name: golang.org/x/net
+  version: 6078986fec03a1dcc236c34816c71b0e05018fda
+  subpackages:
+  - context
+  - http2
+  - http2/hpack
+  - idna
+  - internal/timeseries
+  - lex/httplex
+  - trace
+- name: golang.org/x/sys
+  version: 91ee8cde435411ca3f1cd365e8f20131aed4d0a1
+  subpackages:
+  - unix
+  - windows
+- name: golang.org/x/text
+  version: ab48842968a66deafa354805a8b031924668e059
+  subpackages:
+  - secure/bidirule
+  - transform
+  - unicode/bidi
+  - unicode/norm
+- name: google.golang.org/genproto
+  version: ab0870e398d5dd054b868c0db1481ab029b9a9f2
+  subpackages:
+  - googleapis/rpc/status
+- name: google.golang.org/grpc
+  version: 8e4536a86ab602859c20df5ebfd0bd4228d08655
+  subpackages:
+  - balancer
+  - balancer/base
+  - balancer/roundrobin
+  - codes
+  - connectivity
+  - credentials
+  - encoding
+  - encoding/proto
+  - grpclb/grpc_lb_v1/messages
+  - grpclog
+  - internal
+  - keepalive
+  - metadata
+  - naming
+  - peer
+  - reflection
+  - reflection/grpc_reflection_v1alpha
+  - resolver
+  - resolver/dns
+  - resolver/passthrough
+  - stats
+  - status
+  - tap
+  - transport
+testImports: []
