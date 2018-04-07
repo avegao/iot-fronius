@@ -41,5 +41,27 @@ func powerflowFromRequestToEntity(request *pb.Powerflow) (entity froniusCurrentP
 		EnergyTotal:             request.Site.GetEnergyTotal(),
 	}
 
+	entity.Inverters = make([]froniusCurrentPowerflow.Inverter, len(request.GetInverter()))
+	entity.Ohmpilots = make([]froniusCurrentPowerflow.Ohmpilot, len(request.GetOhmpilot()))
+
+	for index, requestInverter := range request.GetInverter() {
+		entity.Inverters[index] = froniusCurrentPowerflow.Inverter{
+			BatteryMode: fronius.BatteryMode(requestInverter.GetBatteryMode()),
+			DeviceType:  uint16(requestInverter.GetDeviceType()),
+			EnergyDay:   requestInverter.GetEnergyDay(),
+			EnergyYear:  requestInverter.GetEnergyYear(),
+			EnergyTotal: requestInverter.GetEnergyTotal(),
+			Soc:         uint8(requestInverter.GetSoc()),
+		}
+	}
+
+	for index, requestOhmpilot := range request.GetOhmpilot() {
+		entity.Ohmpilots[index] = froniusCurrentPowerflow.Ohmpilot{
+			PowerAcTotal: requestOhmpilot.GetPowerAcTotal(),
+			State: fronius.OhmpilotState(requestOhmpilot.GetState()),
+			Temperature: requestOhmpilot.GetTemperature(),
+		}
+	}
+
 	return
 }
