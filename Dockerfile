@@ -1,4 +1,4 @@
-FROM golang:1.10.0-alpine AS build
+FROM golang:1.10.1-alpine AS build
 
 ARG VCS_REF="unknown"
 ARG BUILD_DATE="unknown"
@@ -26,7 +26,10 @@ MAINTAINER "Álvaro de la Vega Olmedilla <alvarodlvo@gmail.com>"
 ENV GRPC_VERBOSITY ERROR
 
 RUN addgroup iot-fronius && \
-    adduser -D -G iot-fronius iot-fronius
+    adduser -D -G iot-fronius iot-fronius && \
+    apk add --update --no-cache \
+        curl \
+        ca-certificates
 
 USER iot-fronius
 

@@ -13,11 +13,15 @@ func (currentPowerflow CurrentPowerflow) Persist() error {
 	}
 
 	for _, inverter := range currentPowerflow.Inverters {
-		inverter.Persist(site.Id)
+		if err := inverter.Persist(site.Id); err != nil {
+			return err
+		}
 	}
 
 	for _, ohmpilot := range currentPowerflow.Ohmpilots {
-		ohmpilot.Persist(site.Id)
+		if err := ohmpilot.Persist(site.Id); err != nil {
+			return err
+		}
 	}
 
 	return nil

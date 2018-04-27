@@ -9,7 +9,7 @@ import (
 
 type Ohmpilot struct {
 	// PowerAcTotal Current power consumption in Watt
-	PowerAcTotal int
+	PowerAcTotal float64
 
 	State fronius.OhmpilotState
 

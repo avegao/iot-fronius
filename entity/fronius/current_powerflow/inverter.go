@@ -8,7 +8,7 @@ import (
 )
 
 type Inverter struct {
-	BatteryMode *fronius.BatteryMode
+	BatteryMode fronius.BatteryMode
 
 	// DeviceType Device type of Inverter
 	DeviceType uint16

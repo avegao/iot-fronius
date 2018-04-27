@@ -9,46 +9,9 @@ package iot_fronius;
 
 service Fronius {
     rpc InsertCurrentDataPowerflow (Powerflow) returns (SuccessResponse);
+    rpc InsertCurrentDataMeter (CurrenDataMeterRequest) returns (SuccessResponse);
+    rpc InsertCurrentDataInverter (CurrenDataInverterRequest) returns (SuccessResponse);
 }
-
-//enum SiteMode {
-//    PRODUCE_ONLY = 0;
-//    METER = 1;
-//    VAGUE_METER = 2;
-//    BIDIRECTIONAL = 3;
-//    AC_COUPLED = 4;
-//}
-//
-//enum MeterLocation {
-//    LOAD = 0;
-//    GRID = 1;
-//    UNKOWN = 2;
-//}
-//
-//enum BattteryMode {
-//    DISABLED = 0;
-//    NORMAL = 1;
-//    SERVICE = 2;
-//    CHARGE_BOOST = 3;
-//    NEARYLY_DEPLETED = 4;
-//    SUSPENDED = 5;
-//    CALIBRATE = 6;
-//    GRID_SUPPORT = 7;
-//    DEPLETE_RECOVERY = 8;
-//    NON_OPERABLE_VOLTAGE = 9;
-//    NON_OPERABLE_TEMPERATURE = 10;
-//    PREHEATING = 11;
-//    STARTUP = 12;
-//}
-//
-//enum OhmpilotState {
-//    NORMAL = 0;
-//    MIN_TEMPERATURE = 1;
-//    LEGIONALLA_PROTECTION = 2;
-//    FAULT = 3;
-//    WARNING = 4;
-//    BOOST = 5;
-//}
 
 message SuccessResponse {
     bool success = 1;
@@ -87,7 +50,74 @@ message InverterPowerflow {
 }
 
 message OhmpilotPowerflow {
-    double PowerAcTotal = 1;
+    double powerAcTotal = 1;
     string state = 2;
     double temperature = 3;
+}
+
+message CurrentDataMeter {
+    double currentAcPhase1 = 1;
+    double currentAcPhase2 = 2;
+    double currentAcPhase3 = 3;
+    double currentAcSum = 4;
+    MeterDetails meterDetails = 5;
+    bool enable = 6;
+    uint32 energyReactiveVArAcPhase1Consumed = 7;
+    uint32 energyReactiveVArAcPhase1Produced = 8;
+    uint32 energyReactiveVArAcPhase2Consumed = 9;
+    uint32 energyReactiveVArAcPhase2Produced = 10;
+    uint32 energyReactiveVArAcPhase3Consumed = 11;
+    uint32 energyReactiveVArAcPhase3Produced = 12;
+    uint32 energyReactiveVArAcSumConsumed = 13;
+    uint32 energyReactiveVArAcSumProduced = 14;
+    uint32 energyRealWAcMinusAbsolute = 15;
+    uint32 energyRealWAcPhase1Consumed = 16;
+    uint32 energyRealWAcPhase1Produced = 17;
+    uint32 energyRealWAcPhase2Consumed = 18;
+    uint32 energyRealWAcPhase2Produced = 19;
+    uint32 energyRealWAcPhase3Consumed = 20;
+    uint32 energyRealWAcPhase3Produced = 21;
+    uint32 energyRealWAcSumConsumed = 22;
+    uint32 energyRealWAcSumProduced = 23;
+    double frequencyPhaseAverage = 24;
+    uint32 meterLocationCurrent = 25;
+    double powerApparentSPhase1 = 26;
+    double powerApparentSPhase2 = 27;
+    double powerApparentSPhase3 = 28;
+    double powerApparentSSum = 29;
+    double powerFactorPhase1 = 30;
+    double powerFactorPhase2 = 31;
+    double powerFactorPhase3 = 32;
+    double powerFactorSum = 33;
+    double powerReactiveQPhase1 = 34;
+    double powerReactiveQPhase2 = 35;
+    double powerReactiveQPhase3 = 36;
+    double powerReactiveQSum = 37;
+    double powerRealPPhase1 = 38;
+    double powerRealPPhase2 = 39;
+    double powerRealPPhase3 = 40;
+    double powerRealPSum = 41;
+    uint32 timestamp = 42;
+    bool visible = 43;
+    double voltageAcPhase1 = 44;
+    double voltageAcPhase2 = 45;
+    double voltageAcPhase3 = 46;
+}
+
+message MeterDetails {
+    string manufacturer = 1;
+    string model = 2;
+    string serial = 3;
+}
+
+message CurrenDataMeterRequest {
+    repeated CurrentDataMeter elements = 1;
+}
+
+message CurrenDataInverterRequest {
+    repeated int32 dayEnergy = 1;
+    repeated int32 pac = 2;
+    repeated int32 totalEnergy = 3;
+    repeated int32 yearEnergy = 4;
+    int64 timestamp = 5;
 }
