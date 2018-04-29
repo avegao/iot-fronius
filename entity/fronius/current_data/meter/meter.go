@@ -4,78 +4,69 @@ import (
 	"time"
 	"fmt"
 	"github.com/avegao/gocondi"
-	"database/sql"
-	"github.com/avegao/iot-api/entity/fronius"
 	"github.com/pkg/errors"
 )
 
 type CurrentDataMeter struct {
-	Body CurrentDataMeterBody   `json:"Body"`
-	Head fronius.ResponseHeader `json:"Head"`
-}
-
-type CurrentDataMeterBody map[string]CurrentDataMeterBodyElement
-
-type CurrentDataMeterBodyElement struct {
 	Id              uint64
-	CurrentACPhase1 float64  `json:"Current_AC_Phase_1"`
-	CurrentACPhase2 *float64 `json:"Current_AC_Phase_2"`
-	CurrentACPhase3 *float64 `json:"Current_AC_Phase_3"`
-	CurrentACSum    float64  `json:"Current_AC_Sum"`
+	CurrentACPhase1 float64
+	CurrentACPhase2 float64
+	CurrentACPhase3 float64
+	CurrentACSum    float64
 	Details struct {
-		Manufacturer string `json:"Manufacturer"`
-		Model        string `json:"Model"`
-		Serial       string `json:"Serial"`
-	} `json:"Details"`
-	Enable                            int             `json:"Enable"`
-	EnergyReactiveVArACPhase1Consumed int             `json:"EnergyReactive_VArAC_Phase_1_Consumed"`
-	EnergyReactiveVArACPhase1Produced int             `json:"EnergyReactive_VArAC_Phase_1_Produced"`
-	EnergyReactiveVArACPhase2Consumed sql.NullInt64   `json:"EnergyReactive_VArAC_Phase_2_Consumed"`
-	EnergyReactiveVArACPhase2Produced sql.NullInt64   `json:"EnergyReactive_VArAC_Phase_2_Produced"`
-	EnergyReactiveVArACPhase3Consumed sql.NullInt64   `json:"EnergyReactive_VArAC_Phase_3_Consumed"`
-	EnergyReactiveVArACPhase3Produced sql.NullInt64   `json:"EnergyReactive_VArAC_Phase_3_Produced"`
-	EnergyReactiveVArACSumConsumed    int             `json:"EnergyReactive_VArAC_Sum_Consumed"`
-	EnergyReactiveVArACSumProduced    int             `json:"EnergyReactive_VArAC_Sum_Produced"`
-	EnergyRealWACMinusAbsolute        int             `json:"EnergyReal_WAC_Minus_Absolute"`
-	EnergyRealWACPhase1Consumed       int             `json:"EnergyReal_WAC_Phase_1_Consumed"`
-	EnergyRealWACPhase1Produced       int             `json:"EnergyReal_WAC_Phase_1_Produced"`
-	EnergyRealWACPhase2Consumed       sql.NullInt64   `json:"EnergyReal_WAC_Phase_2_Consumed"`
-	EnergyRealWACPhase2Produced       sql.NullInt64   `json:"EnergyReal_WAC_Phase_2_Produced"`
-	EnergyRealWACPhase3Consumed       sql.NullInt64   `json:"EnergyReal_WAC_Phase_3_Consumed"`
-	EnergyRealWACPhase3Produced       sql.NullInt64   `json:"EnergyReal_WAC_Phase_3_Produced"`
-	EnergyRealWACPlusAbsolute         int             `json:"EnergyReal_WAC_Plus_Absolute"`
-	EnergyRealWACSumConsumed          int             `json:"EnergyReal_WAC_Sum_Consumed"`
-	EnergyRealWACSumProduced          int             `json:"EnergyReal_WAC_Sum_Produced"`
-	FrequencyPhaseAverage             float64         `json:"Frequency_Phase_Average"`
-	MeterLocationCurrent              int             `json:"Meter_Location_Current"`
-	PowerApparentSPhase1              float64         `json:"PowerApparent_S_Phase_1"`
-	PowerApparentSPhase2              sql.NullFloat64 `json:"PowerApparent_S_Phase_2"`
-	PowerApparentSPhase3              sql.NullFloat64 `json:"PowerApparent_S_Phase_3"`
-	PowerApparentSSum                 float64         `json:"PowerApparent_S_Sum"`
-	PowerFactorPhase1                 float64         `json:"PowerFactor_Phase_1"`
-	PowerFactorPhase2                 sql.NullFloat64 `json:"PowerFactor_Phase_2"`
-	PowerFactorPhase3                 sql.NullFloat64 `json:"PowerFactor_Phase_3"`
-	PowerFactorSum                    float64         `json:"PowerFactor_Sum"`
-	PowerReactiveQPhase1              float64         `json:"PowerReactive_Q_Phase_1"`
-	PowerReactiveQPhase2              sql.NullFloat64 `json:"PowerReactive_Q_Phase_2"`
-	PowerReactiveQPhase3              sql.NullFloat64 `json:"PowerReactive_Q_Phase_3"`
-	PowerReactiveQSum                 float64         `json:"PowerReactive_Q_Sum"`
-	PowerRealPPhase1                  float64         `json:"PowerReal_P_Phase_1"`
-	PowerRealPPhase2                  sql.NullFloat64 `json:"PowerReal_P_Phase_2"`
-	PowerRealPPhase3                  sql.NullFloat64 `json:"PowerReal_P_Phase_3"`
-	PowerRealPSum                     float64         `json:"PowerReal_P_Sum"`
-	TimeStamp                         int             `json:"TimeStamp"`
-	Visible                           int             `json:"Visible"`
-	VoltageACPhase1                   float64         `json:"Voltage_AC_Phase_1"`
-	VoltageACPhase2                   sql.NullFloat64 `json:"Voltage_AC_Phase_2"`
-	VoltageACPhase3                   sql.NullFloat64 `json:"Voltage_AC_Phase_3"`
+		Manufacturer string
+		Model        string
+		Serial       string
+	}
+	Enable                            bool
+	EnergyReactiveVArACPhase1Consumed uint32
+	EnergyReactiveVArACPhase1Produced uint32
+	EnergyReactiveVArACPhase2Consumed uint32
+	EnergyReactiveVArACPhase2Produced uint32
+	EnergyReactiveVArACPhase3Consumed uint32
+	EnergyReactiveVArACPhase3Produced uint32
+	EnergyReactiveVArACSumConsumed    uint32
+	EnergyReactiveVArACSumProduced    uint32
+	EnergyRealWACMinusAbsolute        uint32
+	EnergyRealWACPhase1Consumed       uint32
+	EnergyRealWACPhase1Produced       uint32
+	EnergyRealWACPhase2Consumed       uint32
+	EnergyRealWACPhase2Produced       uint32
+	EnergyRealWACPhase3Consumed       uint32
+	EnergyRealWACPhase3Produced       uint32
+	EnergyRealWACPlusAbsolute         uint32
+	EnergyRealWACSumConsumed          uint32
+	EnergyRealWACSumProduced          uint32
+	FrequencyPhaseAverage             float64
+	MeterLocationCurrent              uint32
+	PowerApparentSPhase1              float64
+	PowerApparentSPhase2              float64
+	PowerApparentSPhase3              float64
+	PowerApparentSSum                 float64
+	PowerFactorPhase1                 float64
+	PowerFactorPhase2                 float64
+	PowerFactorPhase3                 float64
+	PowerFactorSum                    float64
+	PowerReactiveQPhase1              float64
+	PowerReactiveQPhase2              float64
+	PowerReactiveQPhase3              float64
+	PowerReactiveQSum                 float64
+	PowerRealPPhase1                  float64
+	PowerRealPPhase2                  float64
+	PowerRealPPhase3                  float64
+	PowerRealPSum                     float64
+	TimeStamp                         uint32
+	Visible                           bool
+	VoltageACPhase1                   float64
+	VoltageACPhase2                   float64
+	VoltageACPhase3                   float64
 }
 
-func (currentData CurrentDataMeterBodyElement) getTableName() string {
+func (currentData CurrentDataMeter) getTableName() string {
 	return "\"fronius\".\"current_data_meter\""
 }
 
-func (currentData CurrentDataMeterBodyElement) Persist() (err error) {
+func (currentData CurrentDataMeter) Persist() (err error) {
 	if currentData.Id == 0 {
 		err = currentData.insert()
 	} else {
@@ -85,7 +76,7 @@ func (currentData CurrentDataMeterBodyElement) Persist() (err error) {
 	return
 }
 
-func (currentData CurrentDataMeterBodyElement) insert() (err error) {
+func (currentData CurrentDataMeter) insert() (err error) {
 	const logTag = "CurrentDataMeterBody.insert()"
 	startTimeLog := time.Now()
 	container := gocondi.GetContainer()
