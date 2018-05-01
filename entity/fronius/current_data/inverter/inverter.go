@@ -70,7 +70,8 @@ func (inverter *CurrentDataInverter) insert() (id uint64, err error) {
 	db, err := container.GetDefaultDatabase()
 	if err != nil {
 		logger.WithError(err).Debugf("%s -> STOP", logTag)
-		return
+
+		return 0, err
 	}
 
 	if err := db.QueryRow(insertQuery,
@@ -81,7 +82,9 @@ func (inverter *CurrentDataInverter) insert() (id uint64, err error) {
 		inverter.Timestamp,
 		inverter.CreatedAt,
 	).Scan(&id); err != nil {
-		logger.WithError(err).Panicf("%s -> STOP", logTag)
+		logger.WithError(err).Errorf("%s -> STOP", logTag)
+
+		return 0, err
 	}
 
 	logger.

@@ -204,7 +204,7 @@ func (currentData CurrentDataMeter) insert() (err error) {
 		currentData.VoltageACPhase2,
 		currentData.VoltageACPhase3,
 	); err != nil {
-		logger.WithError(err).Panicf("%s -> STOP", logTag)
+		logger.WithError(err).Errorf("%s -> STOP", logTag)
 	}
 
 	logger.
