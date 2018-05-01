@@ -8,12 +8,6 @@
   version = "0.5.4"
 
 [[projects]]
-  branch = "master"
-  name = "github.com/avegao/iot-api"
-  packages = ["entity/fronius"]
-  revision = "de80598360c60df1eb51ed9a890b0c0265e53adc"
-
-[[projects]]
   name = "github.com/golang/protobuf"
   packages = [
     "proto",
@@ -146,6 +140,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "711729f789b26f2f2a8794fe3072c02b97752711df725195f0f1aaacf7fd3efe"
+  inputs-digest = "709d65c8039067abc2c9eaea9975d1c8edfada1cb1eb9d5a795c79cda08c0b68"
   solver-name = "gps-cdcl"
   solver-version = 1
