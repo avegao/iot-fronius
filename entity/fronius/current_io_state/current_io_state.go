@@ -1,4 +1,4 @@
-package froniusCurrentDataInverter
+package froniusCurrentIoState
 
 import (
 	"time"
@@ -7,25 +7,25 @@ import (
 	"errors"
 )
 
-type CurrentDataInverter struct {
-	Id          uint64
-	DayEnergy   int32
-	Pac         int32
-	TotalEnergy int32
-	YearEnergy  int32
-	Timestamp   time.Time
-	CreatedAt   time.Time
+type CurrentIoState struct {
+	Id        uint64
+	PinNumber int32
+	Function  string
+	Type      string
+	Direction string
+	Set       bool
+	CreatedAt time.Time
 }
 
-func (inverter *CurrentDataInverter) getTableName() string {
-	return "\"fronius\".\"current_data_inverter\""
+func (state *CurrentIoState) getTableName() string {
+	return "\"fronius\".\"current_io_state\""
 }
 
-func (inverter *CurrentDataInverter) Persist() (error) {
-	if inverter.Id == 0 {
-		id, err := inverter.insert()
+func (state *CurrentIoState) Persist() (error) {
+	if state.Id == 0 {
+		id, err := state.insert()
 
-		inverter.Id = id
+		state.Id = id
 
 		if err != nil {
 			return err
@@ -37,33 +37,32 @@ func (inverter *CurrentDataInverter) Persist() (error) {
 	return nil
 }
 
-func (inverter *CurrentDataInverter) insert() (id uint64, err error) {
-	const logTag = "CurrentDataInverter.Site.insert()"
+func (state *CurrentIoState) insert() (id uint64, err error) {
+	const logTag = "CurrentIoState.Site.insert()"
 	startTimeLog := time.Now()
 	container := gocondi.GetContainer()
 
 	logger := container.GetLogger()
 	logger.
-		WithField("CurrentDataInverter", *inverter).
+		WithField("CurrentIoState", *state).
 		Debugf(fmt.Sprintf("%s -> START", logTag))
 
 	insertQuery := fmt.Sprintf(`
 		INSERT INTO %s (
-			"day_energy",
-			"pac",
-			"total_energy",
-			"year_energy",
-			"timestamp",
-			"created_at"
+			"pin_number",
+			"function",
+			"type",
+			"direction",
+			"set"
 		) VALUES (
-			$1,$2,$3,$4,$5,$6
+			$1,$2,$3,$4,$5
 		) RETURNING id::int;`,
-		inverter.getTableName(),
+		state.getTableName(),
 	)
 
 	logger.
 		WithField("query", insertQuery).
-		WithField("parameters", *inverter).
+		WithField("parameters", *state).
 		WithField("time_spent", time.Since(startTimeLog).Nanoseconds()).
 		Debugf(fmt.Sprintf("%s -> Query to execute", logTag))
 
@@ -75,12 +74,11 @@ func (inverter *CurrentDataInverter) insert() (id uint64, err error) {
 	}
 
 	if err := db.QueryRow(insertQuery,
-		inverter.DayEnergy,
-		inverter.Pac,
-		inverter.TotalEnergy,
-		inverter.YearEnergy,
-		inverter.Timestamp,
-		inverter.CreatedAt,
+		state.PinNumber,
+		state.Function,
+		state.Type,
+		state.Direction,
+		state.Set,
 	).Scan(&id); err != nil {
 		logger.WithError(err).Errorf("%s -> STOP", logTag)
 
@@ -88,7 +86,7 @@ func (inverter *CurrentDataInverter) insert() (id uint64, err error) {
 	}
 
 	logger.
-		WithField("CurrentDataInverter", *inverter).
+		WithField("CurrentIoState", *state).
 		WithField("time_spent", time.Since(startTimeLog).Nanoseconds()).
 		WithField("id", id).
 		Debugf(fmt.Sprintf("%s -> END", logTag))

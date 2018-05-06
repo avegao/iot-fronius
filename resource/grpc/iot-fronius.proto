@@ -11,6 +11,7 @@ service Fronius {
     rpc InsertCurrentDataPowerflow (Powerflow) returns (SuccessResponse);
     rpc InsertCurrentDataMeter (CurrenDataMeterRequest) returns (SuccessResponse);
     rpc InsertCurrentDataInverter (CurrenDataInverterRequest) returns (SuccessResponse);
+    rpc InsertCurrentIoState (CurrentIoState) returns (SuccessResponse);
 }
 
 message SuccessResponse {
@@ -121,4 +122,16 @@ message CurrenDataInverterRequest {
     repeated int32 totalEnergy = 3;
     repeated int32 yearEnergy = 4;
     int64 timestamp = 5;
+}
+
+message CurrentIoState {
+    repeated IoStatePin pins = 1;
+}
+
+message IoStatePin {
+    int32 pinNumber = 1;
+    string function = 2;
+    string type = 3;
+    string direction = 4;
+    bool set = 5;
 }

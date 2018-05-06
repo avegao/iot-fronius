@@ -10,6 +10,7 @@ import (
 	"github.com/avegao/iot-fronius/entity/fronius/current_data/inverter"
 	"time"
 	"github.com/avegao/iot-fronius/entity/fronius/current_data/meter"
+	"github.com/avegao/iot-fronius/entity/fronius/current_io_state"
 )
 
 type Fronius struct {
@@ -49,6 +50,19 @@ func (service Fronius) InsertCurrentDataMeter(ctx context.Context, request *pb.C
 
 	return &pb.SuccessResponse{Success: true}, nil
 }
+
+func (service Fronius) InsertCurrentIoState(ctx context.Context, request *pb.CurrentIoState) (*pb.SuccessResponse, error) {
+	states := currentIoStateToEntity(request)
+
+	for _, state := range states {
+		if err := state.Persist(); err != nil {
+			return nil, status.New(codes.Internal, err.Error()).Err()
+		}
+	}
+
+	return &pb.SuccessResponse{Success: true}, nil
+}
+
 func currentDataMeterToEntity(request *pb.CurrenDataMeterRequest) []froniusCurrentDataMeter.CurrentDataMeter {
 	length := len(request.GetElements())
 	currentDataMeters := make([]froniusCurrentDataMeter.CurrentDataMeter, length)
@@ -166,4 +180,20 @@ func currentDataInverterToEntity(request *pb.CurrenDataInverterRequest) []froniu
 	}
 
 	return inverters
+}
+
+func currentIoStateToEntity(request *pb.CurrentIoState) ([]froniusCurrentIoState.CurrentIoState) {
+	entities := make([]froniusCurrentIoState.CurrentIoState, len(request.GetPins()))
+
+	for index, pin := range request.GetPins() {
+		entities[index] = froniusCurrentIoState.CurrentIoState{
+			PinNumber: pin.GetPinNumber(),
+			Function: pin.GetFunction(),
+			Type: pin.GetType(),
+			Direction: pin.GetDirection(),
+			Set: pin.GetSet(),
+		}
+	}
+
+	return entities
 }
