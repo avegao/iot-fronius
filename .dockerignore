@@ -84,3 +84,6 @@ Temporary Items
 
 bin
 vendor
+Makefile
+.gitignore
+.dockerignore
