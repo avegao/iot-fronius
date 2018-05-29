@@ -99,10 +99,10 @@ CREATE TABLE "fronius"."current_powerflow_ohmpilot" (
 
 CREATE TABLE "fronius"."current_data_inverter" (
   "id"           SERIAL8,
-  "day_energy"   INTEGER   NOT NULL,
-  "pac"          INTEGER   NOT NULL,
-  "total_energy" INTEGER   NOT NULL,
-  "year_energy"  INTEGER   NOT NULL,
+  "day_energy"   FLOAT8   NOT NULL,
+  "pac"          FLOAT8   NOT NULL,
+  "total_energy" FLOAT8   NOT NULL,
+  "year_energy"  FLOAT8   NOT NULL,
   "timestamp"    timestamp NOT NULL,
   "created_at"   timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT "pk_current_data_inverter" PRIMARY KEY ("id")
