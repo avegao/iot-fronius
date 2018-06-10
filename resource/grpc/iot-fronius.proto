@@ -12,6 +12,8 @@ service Fronius {
     rpc InsertCurrentDataMeter (CurrenDataMeterRequest) returns (SuccessResponse);
     rpc InsertCurrentDataInverter (CurrenDataInverterRequest) returns (SuccessResponse);
     rpc InsertCurrentIoState (CurrentIoState) returns (SuccessResponse);
+
+    rpc FindDataMeterByDate (FindByDateParameters) returns (GetDataMeterResponseArray);
 }
 
 message SuccessResponse {
@@ -99,7 +101,7 @@ message CurrentDataMeter {
     double powerRealPPhase2 = 40;
     double powerRealPPhase3 = 41;
     double powerRealPSum = 42;
-    uint32 timestamp = 43;
+    int64 timestamp = 43;
     bool visible = 44;
     double voltageAcPhase1 = 45;
     double voltageAcPhase2 = 46;
@@ -134,4 +136,60 @@ message IoStatePin {
     string type = 3;
     string direction = 4;
     bool set = 5;
+}
+
+message FindByDateParameters {
+    int64 startDate = 1;
+    int64 endDate = 2;
+}
+
+message GetDataMeterResponseArray {
+    repeated GetDataMeterResponse data = 1;
+}
+
+message GetDataMeterResponse {
+    uint64 id = 1;
+    double currentAcPhase1 = 2;
+    double currentAcPhase2 = 3;
+    double currentAcPhase3 = 4;
+    double currentAcSum = 5;
+    uint32 energyReactiveVArAcPhase1Consumed = 6;
+    uint32 energyReactiveVArAcPhase1Produced = 7;
+    uint32 energyReactiveVArAcPhase2Consumed = 8;
+    uint32 energyReactiveVArAcPhase2Produced = 9;
+    uint32 energyReactiveVArAcPhase3Consumed = 10;
+    uint32 energyReactiveVArAcPhase3Produced = 11;
+    uint32 energyReactiveVArAcSumConsumed = 12;
+    uint32 energyReactiveVArAcSumProduced = 13;
+    uint32 energyRealWAcMinusAbsolute = 14;
+    uint32 energyRealWAcPhase1Consumed = 15;
+    uint32 energyRealWAcPhase1Produced = 16;
+    uint32 energyRealWAcPhase2Consumed = 17;
+    uint32 energyRealWAcPhase2Produced = 18;
+    uint32 energyRealWAcPhase3Consumed = 19;
+    uint32 energyRealWAcPhase3Produced = 20;
+    uint32 energyRealWAcPlusAbsolute = 21;
+    uint32 energyRealWAcSumConsumed = 22;
+    uint32 energyRealWAcSumProduced = 23;
+    double frequencyPhaseAverage = 24;
+    double powerApparentSPhase1 = 25;
+    double powerApparentSPhase2 = 26;
+    double powerApparentSPhase3 = 27;
+    double powerApparentSSum = 28;
+    double powerFactorPhase1 = 29;
+    double powerFactorPhase2 = 30;
+    double powerFactorPhase3 = 31;
+    double powerFactorSum = 32;
+    double powerReactiveQPhase1 = 33;
+    double powerReactiveQPhase2 = 34;
+    double powerReactiveQPhase3 = 35;
+    double powerReactiveQSum = 36;
+    double powerRealPPhase1 = 37;
+    double powerRealPPhase2 = 38;
+    double powerRealPPhase3 = 39;
+    double powerRealPSum = 40;
+    int64 timestamp = 41;
+    double voltageAcPhase1 = 42;
+    double voltageAcPhase2 = 43;
+    double voltageAcPhase3 = 44;
 }

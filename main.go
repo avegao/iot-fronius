@@ -8,7 +8,6 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"github.com/heroku/rollrus"
 	"net"
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/grpc"
@@ -39,6 +38,7 @@ func initContainer() {
 		"debug":       *debug,
 		"commit_hash": commitHash,
 		"version":     version,
+		"rollbar_token": "",
 	}
 
 	logger := initLogger()
@@ -52,15 +52,15 @@ func initContainer() {
 
 func initLogger() *logrus.Logger {
 	logLevel := logrus.InfoLevel
-	environment := "release"
+	//environment := "release"
 	log := logrus.New()
 
 	if *debug {
 		logLevel = logrus.DebugLevel
-		environment = "debug"
+		//environment = "debug"
 	} else {
-		hook := rollrus.NewHook(fmt.Sprintf("%v", parameters["rollbar_token"]), environment)
-		log.Hooks.Add(hook)
+		//hook := rollrus.NewHook(fmt.Sprintf("%v", parameters["rollbar_token"]), environment)
+		//log.Hooks.Add(hook)
 	}
 
 	logrus.SetFormatter(&logrus.JSONFormatter{})
@@ -114,7 +114,11 @@ func main() {
 	handleInterrupt()
 
 	logger := container.GetLogger()
-	logger.Infof("IoT Fronius Service v%s started (commit %s, build date %s)", container.GetStringParameter("version"), container.GetStringParameter("commit_hash"), container.GetStringParameter("build_date"))
+	logger.Infof("IoT Fronius Service v%s started (commit %s, build date %s)",
+		container.GetStringParameter("version"),
+		container.GetStringParameter("commit_hash"),
+		container.GetStringParameter("build_date"),
+	)
 
 	initGrpc()
 }

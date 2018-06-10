@@ -17,13 +17,8 @@
     "ptypes/duration",
     "ptypes/timestamp"
   ]
-  revision = "925541529c1fa6821df4e44ce2723319eb2be768"
-  version = "v1.0.0"
-
-[[projects]]
-  name = "github.com/heroku/rollrus"
-  packages = ["."]
-  revision = "8c4f823801514d40d7c7d6cfa13320af0a091611"
+  revision = "b4deda0973fb4c70b50d226b1af49f3da59f5265"
+  version = "v1.1.0"
 
 [[projects]]
   name = "github.com/lib/pq"
@@ -44,12 +39,6 @@
   packages = ["."]
   revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
   version = "v1.0.5"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/stvp/roll"
-  packages = ["."]
-  revision = "3627a5cbeaeaa68023abd02bb8687925265f2f63"
 
 [[projects]]
   name = "golang.org/x/crypto"
@@ -140,6 +129,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "709d65c8039067abc2c9eaea9975d1c8edfada1cb1eb9d5a795c79cda08c0b68"
+  inputs-digest = "197af93bd625f5420c00980755a2abf65fc5413f6af40edc0c6a57b130bd6f5e"
   solver-name = "gps-cdcl"
   solver-version = 1

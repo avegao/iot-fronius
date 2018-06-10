@@ -63,35 +63,54 @@ func (service Fronius) InsertCurrentIoState(ctx context.Context, request *pb.Cur
 	return &pb.SuccessResponse{Success: true}, nil
 }
 
+func (service Fronius) FindDataMeterByDate(ctx context.Context, request *pb.FindByDateParameters) (*pb.GetDataMeterResponseArray, error) {
+	startDate := time.Unix(request.StartDate, 0)
+	endDate := time.Unix(request.EndDate, 0)
+
+	results, err := froniusCurrentDataMeter.FindByDate(startDate, endDate)
+
+	if err != nil {
+		return nil, status.New(codes.Internal, err.Error()).Err()
+	}
+
+	response := make([]*pb.GetDataMeterResponse, len(results))
+
+	for index, result := range results {
+		response[index] = result.ToGrpc()
+	}
+
+	return &pb.GetDataMeterResponseArray{Data: response}, nil
+}
+
 func currentDataMeterToEntity(request *pb.CurrenDataMeterRequest) []froniusCurrentDataMeter.CurrentDataMeter {
 	length := len(request.GetElements())
 	currentDataMeters := make([]froniusCurrentDataMeter.CurrentDataMeter, length)
 
 	for index, requestElement := range request.GetElements() {
 		currentDataMeters[index] = froniusCurrentDataMeter.CurrentDataMeter{
-			CurrentACPhase1:                   requestElement.GetCurrentAcPhase1(),
-			CurrentACPhase2:                   requestElement.GetCurrentAcPhase2(),
-			CurrentACPhase3:                   requestElement.GetCurrentAcPhase3(),
-			CurrentACSum:                      requestElement.GetCurrentAcSum(),
+			CurrentAcPhase1:                   requestElement.GetCurrentAcPhase1(),
+			CurrentAcPhase2:                   requestElement.GetCurrentAcPhase2(),
+			CurrentAcPhase3:                   requestElement.GetCurrentAcPhase3(),
+			CurrentAcSum:                      requestElement.GetCurrentAcSum(),
 			Enable:                            requestElement.GetEnable(),
-			EnergyReactiveVArACPhase1Consumed: requestElement.GetEnergyReactiveVArAcPhase1Consumed(),
-			EnergyReactiveVArACPhase1Produced: requestElement.GetEnergyReactiveVArAcPhase1Produced(),
-			EnergyReactiveVArACPhase2Consumed: requestElement.GetEnergyReactiveVArAcPhase2Consumed(),
-			EnergyReactiveVArACPhase2Produced: requestElement.GetEnergyReactiveVArAcPhase2Produced(),
-			EnergyReactiveVArACPhase3Consumed: requestElement.GetEnergyReactiveVArAcPhase3Consumed(),
-			EnergyReactiveVArACPhase3Produced: requestElement.GetEnergyReactiveVArAcPhase3Produced(),
-			EnergyReactiveVArACSumConsumed:    requestElement.GetEnergyReactiveVArAcSumConsumed(),
-			EnergyReactiveVArACSumProduced:    requestElement.GetEnergyReactiveVArAcSumProduced(),
-			EnergyRealWACMinusAbsolute:        requestElement.GetEnergyRealWAcMinusAbsolute(),
-			EnergyRealWACPhase1Consumed:       requestElement.GetEnergyRealWAcPhase1Consumed(),
-			EnergyRealWACPhase1Produced:       requestElement.GetEnergyRealWAcPhase1Produced(),
-			EnergyRealWACPhase2Consumed:       requestElement.GetEnergyRealWAcPhase2Consumed(),
-			EnergyRealWACPhase2Produced:       requestElement.GetEnergyRealWAcPhase2Produced(),
-			EnergyRealWACPhase3Consumed:       requestElement.GetEnergyRealWAcPhase3Consumed(),
-			EnergyRealWACPhase3Produced:       requestElement.GetEnergyRealWAcPhase3Produced(),
-			EnergyRealWACPlusAbsolute:         requestElement.GetEnergyRealWAcPlusAbsolute(),
-			EnergyRealWACSumConsumed:          requestElement.GetEnergyRealWAcSumConsumed(),
-			EnergyRealWACSumProduced:          requestElement.GetEnergyRealWAcSumProduced(),
+			EnergyReactiveVArAcPhase1Consumed: requestElement.GetEnergyReactiveVArAcPhase1Consumed(),
+			EnergyReactiveVArAcPhase1Produced: requestElement.GetEnergyReactiveVArAcPhase1Produced(),
+			EnergyReactiveVArAcPhase2Consumed: requestElement.GetEnergyReactiveVArAcPhase2Consumed(),
+			EnergyReactiveVArAcPhase2Produced: requestElement.GetEnergyReactiveVArAcPhase2Produced(),
+			EnergyReactiveVArAcPhase3Consumed: requestElement.GetEnergyReactiveVArAcPhase3Consumed(),
+			EnergyReactiveVArAcPhase3Produced: requestElement.GetEnergyReactiveVArAcPhase3Produced(),
+			EnergyReactiveVArAcSumConsumed:    requestElement.GetEnergyReactiveVArAcSumConsumed(),
+			EnergyReactiveVArAcSumProduced:    requestElement.GetEnergyReactiveVArAcSumProduced(),
+			EnergyRealWAcMinusAbsolute:        requestElement.GetEnergyRealWAcMinusAbsolute(),
+			EnergyRealWAcPhase1Consumed:       requestElement.GetEnergyRealWAcPhase1Consumed(),
+			EnergyRealWAcPhase1Produced:       requestElement.GetEnergyRealWAcPhase1Produced(),
+			EnergyRealWAcPhase2Consumed:       requestElement.GetEnergyRealWAcPhase2Consumed(),
+			EnergyRealWAcPhase2Produced:       requestElement.GetEnergyRealWAcPhase2Produced(),
+			EnergyRealWAcPhase3Consumed:       requestElement.GetEnergyRealWAcPhase3Consumed(),
+			EnergyRealWAcPhase3Produced:       requestElement.GetEnergyRealWAcPhase3Produced(),
+			EnergyRealWAcPlusAbsolute:         requestElement.GetEnergyRealWAcPlusAbsolute(),
+			EnergyRealWAcSumConsumed:          requestElement.GetEnergyRealWAcSumConsumed(),
+			EnergyRealWAcSumProduced:          requestElement.GetEnergyRealWAcSumProduced(),
 			FrequencyPhaseAverage:             requestElement.GetFrequencyPhaseAverage(),
 			MeterLocationCurrent:              requestElement.GetMeterLocationCurrent(),
 			PowerApparentSPhase1:              requestElement.GetPowerApparentSPhase1(),
@@ -110,11 +129,10 @@ func currentDataMeterToEntity(request *pb.CurrenDataMeterRequest) []froniusCurre
 			PowerRealPPhase2:                  requestElement.GetPowerRealPPhase2(),
 			PowerRealPPhase3:                  requestElement.GetPowerRealPPhase3(),
 			PowerRealPSum:                     requestElement.GetPowerRealPSum(),
-			TimeStamp:                         requestElement.GetTimestamp(),
-			Visible:                           requestElement.GetVisible(),
-			VoltageACPhase1:                   requestElement.GetVoltageAcPhase1(),
-			VoltageACPhase2:                   requestElement.GetVoltageAcPhase2(),
-			VoltageACPhase3:                   requestElement.GetVoltageAcPhase3(),
+			Timestamp:                         time.Unix(requestElement.GetTimestamp(), 0),
+			VoltageAcPhase1:                   requestElement.GetVoltageAcPhase1(),
+			VoltageAcPhase2:                   requestElement.GetVoltageAcPhase2(),
+			VoltageAcPhase3:                   requestElement.GetVoltageAcPhase3(),
 		}
 	}
 
@@ -188,10 +206,10 @@ func currentIoStateToEntity(request *pb.CurrentIoState) ([]froniusCurrentIoState
 	for index, pin := range request.GetPins() {
 		entities[index] = froniusCurrentIoState.CurrentIoState{
 			PinNumber: pin.GetPinNumber(),
-			Function: pin.GetFunction(),
-			Type: pin.GetType(),
+			Function:  pin.GetFunction(),
+			Type:      pin.GetType(),
 			Direction: pin.GetDirection(),
-			Set: pin.GetSet(),
+			Set:       pin.GetSet(),
 		}
 	}
 
