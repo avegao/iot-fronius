@@ -1,4 +1,4 @@
-FROM golang:1.10.2-alpine AS build
+FROM golang:1.10.3-alpine AS build
 
 ARG VCS_REF="unknown"
 ARG BUILD_DATE="unknown"
